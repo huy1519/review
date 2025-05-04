@@ -1,23 +1,20 @@
 import React, { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";  // Import useLocation từ react-router-dom
+import { Route, Routes } from "react-router-dom";  // Import useLocation từ react-router-dom
 import { AuthProvider } from "./contexts/auth-context";
 import Contact from "./pages/Contact";
 import AdvertiserDisclosure from "./pages/AdvertiserDisclosure";
 import TermsOfUse from "./pages/TermsOfUse";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import HomePage from "./pages/HomePage";
-import ReactGA from 'react-ga4';
+import { initGA, logPageView } from './ga';
+import usePageTracking from './hooks/usePageTracking';
 
 function App() {
-  const location = useLocation(); // Lấy location từ react-router-dom để theo dõi URL thay đổi
-
+  usePageTracking();
   useEffect(() => {
-    // Khởi tạo Google Analytics 4 khi ứng dụng bắt đầu
-    ReactGA.initialize('G-TZTWHNFEFM');  // Thay mã này bằng mã GA4 của bạn
-
-    // Ghi nhận lượt xem trang khi URL thay đổi
-    ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
-  }, [location]);  // Khi location thay đổi (tức là người dùng chuyển trang), gọi logPageView
+    initGA();       // Khởi tạo GA
+    logPageView();  // Gửi lần truy cập đầu tiên
+  }, []);
 
   return (
     <div>
